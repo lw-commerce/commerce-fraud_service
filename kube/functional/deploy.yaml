@@ -1,0 +1,75 @@
+#when running in the pipeline,
+#the string v000 will be replaced by the build number, and
+#the string {IMAGE_PLACEHOLDER} will be replaced with the full image key
+apiVersion: v1
+kind: Service
+metadata:
+  name: fraudapi-v000
+  namespace: order-func
+  labels:
+    app: fraudapi
+    pipeline_tag: "v000"
+  annotations:
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 9000
+  selector:
+    app: fraudapi
+    pipeline_tag: "v000"
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: fraudapi
+    pipeline_tag: "v000"
+  name: fraudapi-v000
+  namespace: order-func
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fraudapi
+      pipeline_tag: "v000"
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: fraudapi
+        pipeline_tag: "v000"
+    spec:
+      containers:
+        - name: fraudapi-v000
+          image: "{IMAGE_PLACEHOLDER}"
+          ports:
+          - containerPort: 8080
+          args:
+            - "-Dconfig.resource=int.conf"
+          livenessProbe:
+            httpGet:
+              path: system-info/version
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 120
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: system-info/version
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 45
+            timeoutSeconds: 15
+          resources:
+            limits:
+              cpu: 500m
+              memory: "1Gi"
+            requests:
+              cpu: 125m
+              memory: "750Mi"

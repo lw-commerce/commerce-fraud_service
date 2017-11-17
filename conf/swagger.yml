@@ -1,0 +1,38 @@
+---
+swagger: '2.0'
+info:
+  title: Fraud API
+  description: Controls API calls to the Fraud Capability
+  version: "1.0.0"
+host: fraudservice.dev.lifeway.com
+schemes:
+  - https
+produces:
+  - application/json
+consumes:
+  - application/json
+definitions:
+  BuildInfo:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Name of app
+      version:
+        type: string
+        description: Build number
+      scalaVersion:
+        type: string
+        description: Scala version
+      sbtVersion:
+        type: string
+        description: SBT version
+      gitCommit:
+        type: string
+        description: id of git commit
+      buildTime:
+        type: string
+        description: timestamp corresponding to build
+      appVersion:
+        type: string
+        description: App version

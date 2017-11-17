@@ -1,0 +1,58 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: fraudapi
+  name: fraudapi
+  namespace: order-uat
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fraudapi
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: fraudapi
+    spec:
+      containers:
+        - name: fraudapi
+          ports:
+          - containerPort: 9000
+          args:
+            - "-Dconfig.resource=uat.conf"
+            - "-Dlogger.resource=uat-logback.xml"
+            - "-J-XX:+CMSClassUnloadingEnabled"
+            - "-J-Xms350M"
+            - "-J-Xmx350M"
+            - "-J-XX:MaxMetaspaceSize=150M"
+          env:
+            - name: LANG
+              value: C
+          image: {IMAGE_PLACEHOLDER}
+          livenessProbe:
+            httpGet:
+              path: system-info/version
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: system-info/version
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 15
+            timeoutSeconds: 10
+          resources:
+            limits:
+              cpu: 1
+              memory: "800Mi"
+            requests:
+              cpu: 500m
+              memory: "700Mi"

@@ -1,0 +1,26 @@
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%15.15t{14}] %-40.40logger{39} : %message%n%rootException</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="ASYNCSTDOUT" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="STDOUT" />
+  </appender>
+
+  <logger name="play" level="INFO" />
+  <logger name="application" level="INFO" />
+  <logger name="akka" level="INFO" />
+  <logger name="global" level="INFO" />
+  <logger name="controllers" level="INFO" />
+  <logger name="com.lifeway" level="INFO" />
+  <logger name="com.lifeway.it.prometheus" level="ERROR" />
+  <logger name="com.lifeway.order.eventmanager.listener" level="ERROR" />
+
+  <root level="ERROR">
+    <appender-ref ref="ASYNCSTDOUT" />
+  </root>
+
+</configuration>

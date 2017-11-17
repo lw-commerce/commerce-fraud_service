@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: fraudapi
+  namespace: order-prod
+  annotations:
+    kubernetes.io/ingress.class: nginx-private
+  labels:
+    app: fraudapi
+    tier: prod
+spec:
+  rules:
+  - host: fraudservice.prod.lifeway.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: fraudapi
+          servicePort: 9000

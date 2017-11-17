@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fraudapi
+  namespace: order-prod
+  labels:
+    app: fraudapi
+  annotations:
+    prometheus.io/path: "/prometheus"
+    prometheus.io/scrape: "true"
+spec:
+  type: ClusterIP
+  ports:
+  - port: 443
+    targetPort: 9000
+  selector:
+    app: fraudapi

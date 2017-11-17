@@ -1,0 +1,18 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# App Info
+
+GET           /system-info/version                      controllers.AppInfo.version
+GET           /system-info/healthcheck                  controllers.AppInfo.healthcheck
+GET           /system-info/appHealth                    controllers.AppInfo.appHealth
+GET           /system-info/integrationHealth            controllers.AppInfo.integrationHealth
+
+GET           /prometheus                               com.lifeway.it.prometheus.PrometheusController.metrics
+
+GET           /                                         controllers.AppInfo.version
+
+
+
+

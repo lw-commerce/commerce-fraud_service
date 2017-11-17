@@ -1,0 +1,11 @@
+Fraud Service
+=================================
+
+Play 2.4 
+
+build the project
+$activator clean compile
+
+start the app
+$activator run
+
