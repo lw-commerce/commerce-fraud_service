@@ -1,0 +1,5 @@
+version: 0.2
+
+phases:
+  build:
+commands: sbt -mem 8192 clean compile +test
